@@ -2,77 +2,111 @@
 <head>
     <title>DCMG to USDT Exchange</title>
     <style>
+        /* Body Styling */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #fff;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-        }
-        
-        .container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
-            text-align: center;
-        }
-        
-        h2 {
-            color: #4CAF50;
-            margin-bottom: 20px;
-        }
-        
-        input[type="number"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 16px;
+            overflow: hidden;
         }
 
+        /* Container with futuristic card effect */
+        .container {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            width: 350px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(0, 255, 255, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: scale(1.05);
+        }
+
+        h2 {
+            color: #00f9ff;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00f9ff, 0 0 20px #00f9ff;
+        }
+
+        /* Input field styling */
+        input[type="number"] {
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            border: 2px solid #00f9ff;
+            border-radius: 10px;
+            background-color: transparent;
+            color: #00f9ff;
+            font-size: 18px;
+            text-align: center;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #00ffcc;
+        }
+
+        /* Button styling */
         button {
             width: 100%;
-            padding: 12px;
-            background-color: #4CAF50;
-            color: white;
-            font-size: 16px;
+            padding: 15px;
+            background-color: #00f9ff;
+            color: #111;
+            font-size: 18px;
             border: none;
-            border-radius: 4px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 255, 255, 0.4);
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #00ffcc;
+            transform: translateY(-5px);
         }
 
         button:active {
-            background-color: #388e3c;
+            background-color: #00b8b8;
+            transform: translateY(2px);
         }
 
-        p {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #777;
-        }
-        
+        /* Error message styling */
         .error {
-            color: red;
+            color: #ff0055;
             font-size: 14px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        /* Glowing effect for active elements */
+        @keyframes glowing {
+            0% { text-shadow: 0 0 5px #00f9ff, 0 0 10px #00f9ff, 0 0 15px #00f9ff, 0 0 20px #00ffcc; }
+            50% { text-shadow: 0 0 10px #00f9ff, 0 0 20px #00f9ff, 0 0 30px #00ffcc, 0 0 40px #00ffcc; }
+            100% { text-shadow: 0 0 5px #00f9ff, 0 0 10px #00f9ff, 0 0 15px #00f9ff, 0 0 20px #00ffcc; }
+        }
+
+        /* Applying glowing effect to title and button */
+        h2, button {
+            animation: glowing 1.5s infinite alternate;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Exchange DCMG to USDT</h2>
+        <h2>DCMG to USDT Exchange</h2>
         <input type="number" id="dcmgAmount" placeholder="Amount in DCMG">
         <button onclick="exchangeTokens()">Exchange</button>
         <p id="errorMessage" class="error"></p>
@@ -87,7 +121,6 @@
 
         const dcgmAddress = 'DCMG_CONTRACT_ADDRESS'; 
         const ERC20_ABI = [
-            // ERC20 ABI standar (diperlukan untuk fungsi approve)
             {
                 "constant": true,
                 "inputs": [
