@@ -1,0 +1,35 @@
+<html>
+<head>
+    <title>DCMG to USDT Exchange</title>
+</head>
+<body>
+    <h2>Exchange DCMG to USDT</h2>
+    <input type="number" id="dcmgAmount" placeholder="Amount in DCMG">
+    <button onclick="exchangeTokens()">Exchange</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.3.5/dist/web3.min.js"></script>
+    <script>
+        const web3 = new Web3(window.ethereum);
+        const contractAddress = 'YOUR_SWAP_CONTRACT_ADDRESS';  // Alamat kontrak swap
+        const contractABI = [ /* ABI dari contract swap yang telah disediakan */ ];
+
+        const contract = new web3.eth.Contract(contractABI, contractAddress);
+
+        async function exchangeTokens() {
+            const amount = document.getElementById('dcmgAmount').value;
+            if (amount <= 0) return alert("Please enter a valid amount");
+
+            const accounts = await web3.eth.getAccounts();
+            const userAddress = accounts[0];
+
+            // Pastikan pengguna memberikan izin kepada kontrak untuk mentransfer DCMG mereka
+            const dcgmAddress = 'DCMG_CONTRACT_ADDRESS'; // Alamat kontrak DCMG
+            const dcmgContract = new web3.eth.Contract(ERC20_ABI, dcgmAddress);
+            await dcmgContract.methods.approve(contractAddress, amount).send({ from: userAddress });
+
+            // Lakukan pertukaran DCMG ke USDT
+            await contract.methods.exchangeDCMGforUSDT(amount).send({ from: userAddress });
+        }
+    </script>
+</body>
+</html>
