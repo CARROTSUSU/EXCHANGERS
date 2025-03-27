@@ -162,28 +162,40 @@
                 return;
             }
 
-            // Pastikan pengguna terhubung ke dompet
-            const accounts = await web3.eth.getAccounts();
-            if (accounts.length === 0) {
-                errorMessage.textContent = "Please connect your wallet (MetaMask or other)";
+            // Memastikan pengguna terhubung ke dompet MetaMask
+            if (typeof window.ethereum === 'undefined') {
+                errorMessage.textContent = "MetaMask is not installed. Please install it.";
                 return;
             }
 
-            const userAddress = accounts[0];
-
-            // Inisialisasi kontrak DCMG
-            const dcmgContract = new web3.eth.Contract(ERC20_ABI, dcgmAddress);
-
+            // Meminta izin untuk mengakses akun MetaMask
             try {
-                // Berikan izin untuk transfer DCMG
-                await dcmgContract.methods.approve(contractAddress, web3.utils.toWei(amount, 'ether')).send({ from: userAddress });
+                await window.ethereum.request({ method: 'eth_requestAccounts' });
+                const accounts = await web3.eth.getAccounts();
+                if (accounts.length === 0) {
+                    errorMessage.textContent = "Please connect your wallet (MetaMask or other)";
+                    return;
+                }
 
-                // Lakukan pertukaran DCMG ke USDT
-                await contract.methods.exchangeDCMGforUSDT(web3.utils.toWei(amount, 'ether')).send({ from: userAddress });
-                alert("Exchange successful!");
+                const userAddress = accounts[0];
+
+                // Inisialisasi kontrak DCMG
+                const dcmgContract = new web3.eth.Contract(ERC20_ABI, dcgmAddress);
+
+                try {
+                    // Berikan izin untuk transfer DCMG
+                    await dcmgContract.methods.approve(contractAddress, web3.utils.toWei(amount, 'ether')).send({ from: userAddress });
+
+                    // Lakukan pertukaran DCMG ke USDT
+                    await contract.methods.exchangeDCMGforUSDT(web3.utils.toWei(amount, 'ether')).send({ from: userAddress });
+                    alert("Exchange successful!");
+                } catch (error) {
+                    console.error("Error during exchange:", error);
+                    alert("An error occurred during the exchange.");
+                }
             } catch (error) {
-                console.error("Error during exchange:", error);
-                alert("An error occurred during the exchange.");
+                errorMessage.textContent = "Please allow MetaMask to connect to your browser.";
+                console.error("MetaMask connection error:", error);
             }
         }
     </script>
